@@ -209,14 +209,14 @@
   <script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <script>
     document.getElementById('y').textContent=new Date().getFullYear();
-    
+
     // 透過 GitHub API 獲取倉庫最後更新時間
     fetch('https://api.github.com/repos/kevinwei1029/kevinwei1029.github.io')
       .then(response => response.json())
       .then(data => {
         const lastUpdate = new Date(data.updated_at);
-        const formattedDate = lastUpdate.getFullYear() + '.' + 
-          String(lastUpdate.getMonth() + 1).padStart(2, '0') + '.' + 
+        const formattedDate = lastUpdate.getFullYear() + '.' +
+          String(lastUpdate.getMonth() + 1).padStart(2, '0') + '.' +
           String(lastUpdate.getDate()).padStart(2, '0');
         document.getElementById('lastUpdateDate').textContent = formattedDate;
       })
