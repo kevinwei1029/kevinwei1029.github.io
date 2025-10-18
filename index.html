@@ -8,12 +8,19 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
     body {
-      background-image: url('assets/profile_bg.png');
+      background-image: url('assets/profile_bg.png'); /* 桌面版背景 */
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
       min-height: 100vh;
+    }
+    
+    /* 手機版背景 (螢幕寬度小於等於 768px) */
+    @media (max-width: 768px) {
+      body {
+        background-image: url('assets/profile_bg_mobile.png');
+      }
     }
     .general-block {
       background: rgba(20,20,20,0.6);
