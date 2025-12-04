@@ -84,6 +84,19 @@
       color: #fff;
       margin-top: 0.25rem;
     }
+    /* Snow canvas styling */
+    #snow-canvas {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #snow-canvas { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -197,7 +210,7 @@
     <!-- Ending Block -->
     <div class="general-block">
       <h2 class="h5">結語</h2>
-      <p class="mt-3">感謝看到最後的各位，希望能和大家成為（說不定有一天能在演唱會場相見的）好朋友！</p>
+      <p class="mt-3">感謝看到最後的各位，希望大家會喜歡這個聖誕節限定的網頁、也希望能和大家成為（說不定有一天能在演唱會場相見的）好朋友！</p>
       <p class="mt-3" id="lastUpdateDate">載入中...</p>
     </div>
     <!-- Visitor Counter Block -->
@@ -210,9 +223,84 @@
       © <span id="y"></span> 冠位非洲人 · 以 GitHub Pages 發布
     </div>
   </div>
+  <!-- Snow canvas (non-interactive) -->
+  <canvas id="snow-canvas" aria-hidden="true"></canvas>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   <script>
+    // Snow effect (canvas-based). Respects prefers-reduced-motion by CSS hiding.
+    (function(){
+      try {
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const canvas = document.getElementById('snow-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let width = 0, height = 0, flakes = [];
+        function resize(){
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize, {passive:true});
+        resize();
+        function init(){
+          // density scales with viewport area; dividing by 4500 doubles previous density
+          const density = Math.max(30, Math.round((width * height) / 4500));
+          flakes = [];
+          for(let i=0;i<density;i++){
+            const isOval = Math.random() < 0.333; // ~1/3 of flakes are slightly elliptical
+            flakes.push({
+              x: Math.random()*width,
+              y: Math.random()*height,
+              r: Math.random()*3 + 1,
+              d: Math.random()*0.9 + 0.3,
+              vx: (Math.random()*0.6)-0.3,
+              oval: isOval,
+              sx: isOval ? (Math.random()*0.6 + 1.2) : 1 // horizontal scale for ellipse
+            });
+          }
+        }
+        init();
+        let angle = 0;
+        function update(){
+          ctx.clearRect(0,0,width,height);
+          angle += 0.01;
+          for(let i=0;i<flakes.length;i++){
+            const f = flakes[i];
+            f.y += Math.pow(f.d,1.5) + Math.sin(angle + f.d) * 0.5;
+            f.x += Math.sin(angle) * 0.6 + f.vx;
+            // draw soft-edged flake using radial gradient
+            const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 2);
+            grad.addColorStop(0, 'rgba(255,255,255,0.95)');
+            grad.addColorStop(0.6, 'rgba(255,255,255,0.6)');
+            grad.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = grad;
+            if (f.oval) {
+              // draw an ellipse with horizontal scale sx
+              ctx.beginPath();
+              ctx.ellipse(f.x, f.y, f.r * 2 * f.sx, f.r * 2, 0, 0, Math.PI * 2);
+              ctx.fill();
+            } else {
+              ctx.beginPath();
+              ctx.arc(f.x, f.y, f.r * 2, 0, Math.PI*2);
+              ctx.fill();
+            }
+            // recycle
+            if (f.y > height + f.r) { f.y = -10; f.x = Math.random()*width; }
+            if (f.x > width + 50) f.x = -50;
+            if (f.x < -50) f.x = width + 50;
+          }
+          requestAnimationFrame(update);
+        }
+        // re-init on large resizes
+        let resizeTimer;
+        window.addEventListener('resize', ()=>{
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(()=>{ init(); }, 200);
+        }, {passive:true});
+        update();
+      } catch(e) { console.error('snow effect error', e); }
+    })();
+
     document.getElementById('y').textContent=new Date().getFullYear();
 
     // 透過 GitHub API 獲取倉庫最後更新時間
