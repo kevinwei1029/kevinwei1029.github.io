@@ -1,0 +1,105 @@
+﻿/* ============================================================
+   index.css — 首頁專用樣式
+   ============================================================ */
+
+/* ── Background ── */
+body {
+  background-image: url('../profile_bg.webp');
+  background-position: right center;
+}
+
+/* ── Profile extras ── */
+.profile-block .h4 {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  opacity: 0.92;
+}
+
+/* ── Social links ── */
+.about-social-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.about-social-item {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.35rem;
+  border-radius: 0.5rem;
+  transition: background 0.2s;
+}
+.about-social-item:hover {
+  background: rgba(255,255,255,0.08);
+}
+.about-social-item i {
+  font-size: 1.4rem;
+  margin-right: 0.75rem;
+  min-width: 1.5rem;
+  opacity: 0.9;
+}
+.about-social-intro {
+  font-size: 0.95rem;
+  color: #f0f0f0;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.litlink-social a {
+  color: #fff;
+  font-size: 2rem;
+  margin: 0 0.5rem;
+  transition: color 0.2s, transform 0.2s;
+}
+.litlink-social a:hover {
+  color: #7ec8e3;
+  transform: scale(1.05);
+}
+
+/* ── Avatar ── */
+.litlink-avatar {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.25);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+  margin-bottom: 1rem;
+}
+.litlink-id {
+  font-size: 1.6rem;
+  color: rgba(255,255,255,0.85);
+  margin-top: 0.25rem;
+  letter-spacing: 1px;
+}
+
+/* ── Live list (index summary) ── */
+.live-list {
+  padding-left: 0;
+  list-style: none;
+}
+.live-list li {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  line-height: 1.6;
+  font-size: 0.93rem;
+}
+.live-list li:last-child {
+  border-bottom: none;
+}
+.live-date {
+  font-family: 'Courier New', monospace;
+  white-space: nowrap;
+  color: #7ec8e3;
+  font-weight: 600;
+  font-size: 0.88rem;
+  min-width: 6.5rem;
+  flex-shrink: 0;
+}
+
+/* ── Override nested list padding for social list & live list ── */
+.general-block ul.about-social-list,
+.general-block ul.live-list {
+  padding-left: 0;
+}

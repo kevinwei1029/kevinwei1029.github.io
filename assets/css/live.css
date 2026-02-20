@@ -1,0 +1,27 @@
+﻿/* ============================================================
+   live.css — 演唱會紀錄頁專用樣式
+   ============================================================ */
+
+/* ── Background ── */
+body {
+  background-image: url('../live_bg.webp');
+  background-position: center;
+}
+
+/* ── Live photo ── */
+.live-photo {
+  max-width: 100%;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+/* ── Grid: 等高卡片，按鈕貼底 ── */
+.live-grid .general-block {
+  height: 100%;
+  margin-bottom: 0;       /* 間距交給 row g-4 處理 */
+  display: flex;
+  flex-direction: column;
+}
+.live-grid .general-block .btn {
+  margin-top: auto;
+}
